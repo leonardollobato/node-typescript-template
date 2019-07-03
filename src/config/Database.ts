@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 import { createConnection } from 'typeorm'
-import { User, Training, Filter } from '../models'
+import { Filter, Training, User } from '../models'
 
 // TODO: put on env file
 createConnection({

@@ -1,9 +1,9 @@
 import {
-  getUsers,
-  getUser,
   addUser,
-  updateUser,
+  getUser,
+  getUsers,
   removeUser,
+  updateUser,
 } from '../controllers'
 
 export class UserRoute {

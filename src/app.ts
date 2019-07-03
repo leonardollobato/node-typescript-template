@@ -1,7 +1,7 @@
 import * as bodyParser from 'body-parser'
 import * as express from 'express'
 import { FilterRoute, TrainingRoute, UserRoute, APIRoute } from '../src/routes'
-import './config/database'
+//import './config/database'
 
 class App {
   public app: express.Application

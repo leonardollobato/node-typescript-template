@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { Filter, IFilter } from '../models'
+import { IFilter } from '../models'
 
 let filters: Array<IFilter> = []
 

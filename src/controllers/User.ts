@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { User, IUser } from '../models'
+import { IUser } from '../models'
 
 let users: Array<IUser> = []
 

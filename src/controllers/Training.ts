@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { Training, ITraining } from '../models'
+import { ITraining } from '../models'
 
 let trainings: Array<ITraining> = []
 
