@@ -1,6 +1,7 @@
 import * as bodyParser from 'body-parser'
 import * as express from 'express'
-import { Index } from '../src/routes/index'
+import { Index } from './routes/index'
+import './config/database'
 
 class App {
   public app: express.Application
