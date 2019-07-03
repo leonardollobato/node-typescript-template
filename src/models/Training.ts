@@ -35,52 +35,52 @@ export class Training {
   @Column({ type: 'text' })
   public detailURL: string
 
-  @Column()
+  @Column({ nullable: true })
   public responsible: string
 
-  @Column()
+  @Column({ nullable: true })
   public contact: string
 
-  @Column()
+  @Column({ nullable: true })
   public duration: string
 
-  @Column()
+  @Column({ nullable: true })
   public type: string
 
-  @Column()
+  @Column({ nullable: true })
   public order: number
 
-  @Column()
+  @Column({ nullable: true })
   public trainingOfMonth: string
 
-  @Column()
+  @Column({ default: 0 })
   public size: string
 
-  @Column()
+  @Column({ default: 0 })
   public externalViews: number
 
-  @Column()
+  @Column({ default: 0 })
   public internalViews: number
 
-  @Column()
+  @Column({ default: false })
   public isVerified: boolean
 
-  @Column()
-  public restricted: boolean
+  @Column({ default: true })
+  public isRestricted: boolean
 
-  @Column()
+  @Column({ default: 0 })
   public comments: number
 
-  @Column()
+  @Column({ default: 0 })
   public likes: number
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   public zipPath: string
 
-  @Column()
+  @Column({ nullable: true })
   public createdBy: string
 
-  @Column()
+  @Column({ nullable: true })
   public uploadedBy: string
 
   @CreateDateColumn({ type: 'timestamp' })

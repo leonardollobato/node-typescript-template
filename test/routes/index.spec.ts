@@ -1,7 +1,7 @@
 import * as chai from 'chai'
 import chaiHttp = require('chai-http')
 import 'mocha'
-import app from '../../src/app'
+import App from '../../src/App'
 
 chai.use(chaiHttp)
 
@@ -10,7 +10,7 @@ const expect = chai.expect
 describe('baseRoute', () => {
   it('should respond with HTTP 200 status', async () => {
     return chai
-      .request(app)
+      .request(App)
       .get('/index')
       .then(res => {
         expect(res.status).to.be.equal(200)
@@ -18,7 +18,7 @@ describe('baseRoute', () => {
   })
   it('should respond with success message', async () => {
     return chai
-      .request(app)
+      .request(App)
       .get('/index')
       .then(res => {
         expect(res.body.status).to.be.equal('success')

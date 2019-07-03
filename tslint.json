@@ -4,6 +4,7 @@
     "array-type": [true, "generic"],
     "no-string-literal": false,
     "object-literal-shorthand": [true, "never"],
+    "object-literal-sort-keys": false,
     "only-arrow-functions": true,
     "interface-name": false,
     "max-classes-per-file": false,
