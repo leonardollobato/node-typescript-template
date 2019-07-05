@@ -1,3 +1,5 @@
+import { Application } from 'express'
+
 import {
   addFilter,
   getFilter,
@@ -7,11 +9,11 @@ import {
 } from '../controllers'
 
 export class FilterRoute {
-  public routes(App): void {
-    App.route('/filters').get(getFilters)
-    App.route('/filters/:id').get(getFilter)
-    App.route('/filters').post(addFilter)
-    App.route('/filters/:id').patch(updateFilter)
-    App.route('/filters/:id').delete(removeFilter)
+  public routes(app: Application): void {
+    app.route('/filters').get(getFilters)
+    app.route('/filters/:id').get(getFilter)
+    app.route('/filters').post(addFilter)
+    app.route('/filters/:id').patch(updateFilter)
+    app.route('/filters/:id').delete(removeFilter)
   }
 }

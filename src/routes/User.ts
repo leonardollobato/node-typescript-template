@@ -1,3 +1,5 @@
+import { Application } from 'express'
+
 import {
   addUser,
   getUser,
@@ -7,11 +9,11 @@ import {
 } from '../controllers'
 
 export class UserRoute {
-  public routes(App): void {
-    App.route('/users').get(getUsers)
-    App.route('/users/:id').get(getUser)
-    App.route('/users').post(addUser)
-    App.route('/users/:id').patch(updateUser)
-    App.route('/users/:id').delete(removeUser)
+  public routes(app: Application): void {
+    app.route('/users').get(getUsers)
+    app.route('/users/:id').get(getUser)
+    app.route('/users').post(addUser)
+    app.route('/users/:id').patch(updateUser)
+    app.route('/users/:id').delete(removeUser)
   }
 }

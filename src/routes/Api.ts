@@ -1,7 +1,8 @@
 import { getApi } from '../controllers'
+import { Application } from 'express'
 
 export class APIRoute {
-  public routes(App): void {
-    App.route('/api').get(getApi)
+  public routes(app: Application): void {
+    app.route('/api').get(getApi)
   }
 }

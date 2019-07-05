@@ -1,4 +1,4 @@
-import app from './App'
+import App from './App'
 const PORT = process.env.PORT
 
-app.listen(PORT)
+App.listen(PORT)

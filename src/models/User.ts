@@ -41,22 +41,15 @@ export class User implements IUser {
   @Column()
   public password: string
 
-  @CreateDateColumn({ type: 'timestamp', nullable: true })
+  @Column({
+    type: 'timestamp',
+    nullable: true,
+  })
   public emailVerifiedAt: Date
 
-  @CreateDateColumn({ type: 'timestamp' })
+  @CreateDateColumn({ type: 'timestamp', update: true })
   public updatedAt: Date
 
-  @CreateDateColumn({ type: 'timestamp' })
+  @CreateDateColumn({ type: 'timestamp', update: false, insert: true })
   public createdAt: Date
-
-  @BeforeInsert()
-  protected created_at() {
-    this.createdAt = new Date()
-  }
-
-  @BeforeUpdate()
-  protected updated_at() {
-    this.updatedAt = new Date()
-  }
 }

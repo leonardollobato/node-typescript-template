@@ -2,7 +2,7 @@ import * as chai from 'chai'
 import chaiHttp = require('chai-http')
 import 'mocha'
 import App from '../../src/App'
-import { IUser, User } from '../../src/models'
+import { IUser } from '../../src/models'
 
 chai.use(chaiHttp)
 

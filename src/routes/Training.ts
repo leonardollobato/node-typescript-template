@@ -1,3 +1,5 @@
+import { Application } from 'express'
+
 import {
   addTraining,
   getTraining,
@@ -7,11 +9,11 @@ import {
 } from '../controllers'
 
 export class TrainingRoute {
-  public routes(App): void {
-    App.route('/trainings/:id').get(getTraining)
-    App.route('/trainings').get(getTrainings)
-    App.route('/trainings').post(addTraining)
-    App.route('/trainings/:id').patch(updateTraining)
-    App.route('/trainings/:id').delete(removeTraining)
+  public routes(app: Application): void {
+    app.route('/trainings/:id').get(getTraining)
+    app.route('/trainings').get(getTrainings)
+    app.route('/trainings').post(addTraining)
+    app.route('/trainings/:id').patch(updateTraining)
+    app.route('/trainings/:id').delete(removeTraining)
   }
 }
