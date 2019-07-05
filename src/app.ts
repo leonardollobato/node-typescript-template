@@ -14,7 +14,7 @@ class App {
 
   constructor() {
     //Database.UserSeed(20)
-    new Database.Builder().withUserSeed(29).build()
+    new Database.Builder().withUserSeed(0).build()
     this.app = express()
     this.app.use(bodyParser.json())
     this.userRoutes.routes(this.app)

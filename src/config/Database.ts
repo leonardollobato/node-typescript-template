@@ -1,34 +1,46 @@
 import 'reflect-metadata'
-import { createConnection, getRepository, Connection } from 'typeorm'
+import { createConnection, getRepository, Connection, Db } from 'typeorm'
 import * as faker from 'faker'
 import { Filter, Training, User } from '../models'
 
 export class Database {
+  private _userRows: number
+  private _trainingRows: number
+
   constructor(build: any) {
     //this.connection = build.connection
-    if (arguments.length === 1 && this.validateBuild(build)) {
-      let rows = build.rows
-      let filterRows = build.filterRows
-      let trainingRows = build.trainingRows
+    if (arguments.length === 1 && this._validateBuild(build)) {
+      this._userRows = build.userRows
+      this._trainingRows = build.trainingRows
 
       Object.defineProperties(this, {
-        _rows: {
-          value: rows,
-          writable: false,
-        },
         _filterRows: {
-          value: filterRows,
+          value: this._userRows,
           writable: false,
         },
         _trainingRows: {
-          value: trainingRows,
+          value: this._trainingRows,
           writable: false,
         },
       })
     }
   }
 
-  validateBuild(build) {
+  runUserSeed() {
+    const userRepository = getRepository(User)
+
+    for (let index = 0; index < this._userRows; index++) {
+      let user = new User()
+      user.email = faker.internet.email()
+      user.password = faker.random.alphaNumeric(8)
+      user.firstname = faker.name.firstName()
+      user.lastname = faker.name.lastName()
+      user.username = faker.finance.accountName()
+      userRepository.save(user)
+    }
+  }
+
+  _validateBuild(build) {
     return String(build.constructor) === String(Database.Builder)
   }
 
@@ -61,50 +73,18 @@ export class Database {
       }
 
       withUserSeed(rows: number) {
+        console.log('withUserSeeder')
         this._userRows = rows
         return this
       }
 
-      withTrainingSeed(rows: number) {
-        this._trainingRows = rows
-        return this
-      }
-
-      _runTrainingSeed() {
-        const userRepository = getRepository(User)
-
-        for (let index = 0; index < this._trainingRows; index++) {
-          let user = new User()
-          user.email = faker.internet.email()
-          user.password = faker.random.alphaNumeric(8)
-          user.firstname = faker.name.firstName()
-          user.lastname = faker.name.lastName()
-          user.username = faker.finance.accountName()
-          userRepository.save(user)
-        }
-      }
-
-      _runUserSeed() {
-        const userRepository = getRepository(User)
-
-        for (let index = 0; index < this._userRows; index++) {
-          let user = new User()
-          user.email = faker.internet.email()
-          user.password = faker.random.alphaNumeric(8)
-          user.firstname = faker.name.firstName()
-          user.lastname = faker.name.lastName()
-          user.username = faker.finance.accountName()
-          userRepository.save(user)
-        }
-      }
-
       build() {
+        const db = new Database(this)
         this._initialize()
 
-        if (this._userRows > 0) this._runUserSeed()
-        if (this._trainingRows > 0) this._runTrainingSeed()
+        if (this._userRows > 0) db.runUserSeed()
 
-        return new Database(this)
+        return db
       }
     }
     return Builder
