@@ -14,8 +14,11 @@ class App {
 
   constructor() {
     //Database.UserSeed(20)
-    const db = new DatabaseBuilder().withUserSeed(100).build()
-    db.runSeeders()
+    new DatabaseBuilder()
+      .withUserSeed(20)
+      .withTrainingSeed(10)
+      .build()
+    // db.runSeeders()
     this.app = express()
     this.app.use(bodyParser.json())
     this.userRoutes.routes(this.app)

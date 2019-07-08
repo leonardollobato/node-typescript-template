@@ -116,25 +116,15 @@ export class Training implements ITraining {
   @CreateDateColumn({ type: 'timestamp' })
   public uploadedAt: Date
 
-  @CreateDateColumn({ type: 'timestamp' })
+  @CreateDateColumn({ type: 'timestamp', update: true, insert: false })
   public updatedAt: Date
 
-  @CreateDateColumn({ type: 'timestamp' })
+  @CreateDateColumn({ type: 'timestamp', update: false, insert: true })
   public createdAt: Date
 
-  @ManyToMany(type => Filter)
-  @JoinTable({
-    name: 'TrainingFilter',
-  })
-  public filters: Array<IFilter>
-
-  @BeforeInsert()
-  protected created_at() {
-    this.createdAt = new Date()
-  }
-
-  @BeforeUpdate()
-  protected updated_at() {
-    this.updatedAt = new Date()
-  }
+  // @ManyToMany(type => Filter)
+  // @JoinTable({
+  //   name: 'TrainingFilter',
+  // })
+  // public filters: Array<IFilter>
 }

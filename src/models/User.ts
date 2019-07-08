@@ -47,7 +47,7 @@ export class User implements IUser {
   })
   public emailVerifiedAt: Date
 
-  @CreateDateColumn({ type: 'timestamp', update: true })
+  @CreateDateColumn({ type: 'timestamp', update: true, insert: false })
   public updatedAt: Date
 
   @CreateDateColumn({ type: 'timestamp', update: false, insert: true })
