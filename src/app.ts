@@ -1,7 +1,7 @@
 import * as bodyParser from 'body-parser'
 import * as express from 'express'
 import { FilterRoute, TrainingRoute, UserRoute, APIRoute } from './routes'
-import { Database } from './config/Database'
+import { Database, DatabaseBuilder } from './config/Database'
 
 class App {
   public app: express.Application
@@ -14,7 +14,8 @@ class App {
 
   constructor() {
     //Database.UserSeed(20)
-    new Database.Builder().withUserSeed(0).build()
+    const db = new DatabaseBuilder().withUserSeed(100).build()
+    db.runSeeders()
     this.app = express()
     this.app.use(bodyParser.json())
     this.userRoutes.routes(this.app)

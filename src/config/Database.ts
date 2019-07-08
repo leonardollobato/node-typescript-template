@@ -1,92 +1,85 @@
 import 'reflect-metadata'
-import { createConnection, getRepository, Connection, Db } from 'typeorm'
+import {
+  createConnection,
+  Connection,
+  getConnectionManager,
+  ConnectionManager,
+} from 'typeorm'
 import * as faker from 'faker'
 import { Filter, Training, User } from '../models'
 
 export class Database {
   private _userRows: number
-  private _trainingRows: number
+  private _connectionManager: ConnectionManager
+  private _connection: Connection
 
-  constructor(build: any) {
-    //this.connection = build.connection
-    if (arguments.length === 1 && this._validateBuild(build)) {
-      this._userRows = build.userRows
-      this._trainingRows = build.trainingRows
-
-      Object.defineProperties(this, {
-        _filterRows: {
-          value: this._userRows,
-          writable: false,
-        },
-        _trainingRows: {
-          value: this._trainingRows,
-          writable: false,
-        },
-      })
-    }
+  constructor(databaseBuilder: DatabaseBuilder) {
+    this._userRows = databaseBuilder.userRows
+    this._connectionManager = databaseBuilder.connectionManager
+    this._connection = databaseBuilder.connection
   }
 
-  runUserSeed() {
-    const userRepository = getRepository(User)
+  public runSeeders = async () => {
+    if (this._connectionManager.has('default')) {
+      const conn = await this._connection.connect()
+      const userRepository = conn.getRepository(User)
 
-    for (let index = 0; index < this._userRows; index++) {
-      let user = new User()
-      user.email = faker.internet.email()
-      user.password = faker.random.alphaNumeric(8)
-      user.firstname = faker.name.firstName()
-      user.lastname = faker.name.lastName()
-      user.username = faker.finance.accountName()
-      userRepository.save(user)
+      for (let index = 0; index < this._userRows; index++) {
+        let user = new User()
+        user.email = faker.internet.email()
+        user.password = faker.random.alphaNumeric(8)
+        user.firstname = faker.name.firstName()
+        user.lastname = faker.name.lastName()
+        user.username = faker.finance.accountName()
+        userRepository.save(user)
+      }
+    } else {
+      console.error('Connection Not Found')
     }
   }
+}
 
-  _validateBuild(build) {
-    return String(build.constructor) === String(Database.Builder)
+export class DatabaseBuilder {
+  private _connectionManager: ConnectionManager
+  private _userRows: number
+
+  constructor() {
+    this._initialize()
   }
 
-  static get Builder() {
-    class Builder {
-      private _userRows: number
-      private _trainingRows: number
+  get userRows() {
+    return this._userRows
+  }
 
-      constructor() {}
+  get connection() {
+    return this.connectionManager.get('default')
+  }
+  get connectionManager() {
+    return getConnectionManager()
+  }
 
-      private _initialize = () => {
-        createConnection({
-          host: '127.0.0.1',
-          port: 33061,
-          username: 'root',
-          password: 'vassoura',
-          type: 'mariadb',
-          database: 'newtraining',
-          logging: true,
-          synchronize: true,
-          dropSchema: true,
-          entities: [Filter, Training, User],
-        })
-          .then(conn => {
-            console.log('Connection Established Successfully')
-          })
-          .catch(err => {
-            console.error(err)
-          })
-      }
+  withUserSeed(rows: number) {
+    this._userRows = rows
+    return this
+  }
 
-      withUserSeed(rows: number) {
-        console.log('withUserSeeder')
-        this._userRows = rows
-        return this
-      }
+  private _initialize = () => {
+    this.connectionManager.create({
+      name: 'default',
+      host: '127.0.0.1',
+      port: 33061,
+      username: 'root',
+      password: 'vassoura',
+      type: 'mariadb',
+      database: 'newtraining',
+      logging: true,
+      synchronize: true,
+      dropSchema: true,
+      entities: [Filter, Training, User],
+    })
+  }
 
-      build() {
-        const db = new Database(this)
-        this._initialize()
-
-        if (this._userRows > 0) db.runUserSeed()
-
-        return db
-      }
-    }
-    return Builder
+  build() {
+    return new Database(this)
   }
 }
